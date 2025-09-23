@@ -21,8 +21,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
     // Redirection après enregistrement
     header('Location: recap.php');
-    exit(); // Important pour arrêter le script après redirection
+    exit(); 
+    
 }
+if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
+        $_SESSION["name"] = '';
+        $_SESSION["LastName"] = '';
+        $_SESSION["NumTele"] ='';
+        $_SESSION["email"] = '';
+        $_SESSION["Age"] =  '';
+        $_SESSION["remarques"] ='';
+        $_SESSION["class"] ='';
+        $_SESSION["annee"] = '';
+        $_SESSION["nbreProjets"] ='';
+        $_SESSION['Langues'] ='';
+        $_SESSION['CentreInteret'] ='';
+        $_SESSION['projets'] ='';
+        $_SESSION['stages'] ='';
+        $_SESSION['Modules'] =[];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -86,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
                 <label for="Langues">Langues :</label>
                 <textarea id="Langues" name="Langues" rows="4" cols="50" required><?php echo isset($_SESSION['Langues']) ? $_SESSION['Langues'] : ''?></textarea><br><br>
                   <input type="submit" name="submit" value="Envoyer">
-                <input type="reset" value="Reset">
+                <input type="reset" name="Reset" value="Reset" >
         </form>
 </body>
 </html>

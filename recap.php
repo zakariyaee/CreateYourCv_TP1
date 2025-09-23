@@ -58,6 +58,7 @@ if (isset($_POST['Valider'])) {
     $_SESSION['stages'] ='';
     $_SESSION['Modules'] =[];
     header('Location: formulaire.php');
+    exit();
 }
 if (isset($_POST['Modifier'])) {
         header('Location: formulaire.php');
