@@ -1,14 +1,29 @@
-$_SESSION["name"] = $_POST["name"];
-$_SESSION["LastName"] = $_POST["LastName"];
-$_SESSION["NumTele"] = $_POST["NumTele"];
-$_SESSION["email"] = $_POST["email"];
-$_SESSION["Age"]= $_POST["Age"];
-$_SESSION["remarques"]= $_POST["remarques"];
-$_SESSION["class"]= $_POST["class"];
-$_SESSION["annee"]= $_POST["annee"];
-$_SESSION["nbreProjets"]= $_POST["nbreProjets"];
-$_SESSION["Modules"]= isset($_POST["Modules"]) ? $_POST["Modules"] : array();   a verifier
-$_SESSION[remarques]= $_POST["remarques"];
+<?php 
+session_start(); // Démarrer la session avant tout envoi HTML
+
+// Sécuriser l'accès aux données POST (optionnel mais recommandé)
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
+
+    $_SESSION["name"] = $_POST["name"] ?? '';
+    $_SESSION["LastName"] = $_POST["LastName"] ?? '';
+    $_SESSION["NumTele"] = $_POST["NumTele"] ?? '';
+    $_SESSION["email"] = $_POST["email"] ?? '';
+    $_SESSION["Age"] = $_POST["Age"] ?? '';
+    $_SESSION["remarques"] = $_POST["remarques"] ?? '';
+    $_SESSION["class"] = $_POST["class"] ?? '';
+    $_SESSION["annee"] = $_POST["annee"] ?? '';
+    $_SESSION["nbreProjets"] = $_POST["nbreProjets"] ?? '';
+    $_SESSION['Langues'] = $_POST['Langues'] ?? '';
+    $_SESSION['CentreInteret'] = $_POST['CentreInteret'] ?? '';
+    $_SESSION['projets'] = $_POST['projets'] ?? '';
+    $_SESSION['stages'] = $_POST['stages'] ?? '';
+    $_SESSION['Modules'] = $_POST['Modules'] ?? [];
+
+    // Redirection après enregistrement
+    header('Location: recap.php');
+    exit(); // Important pour arrêter le script après redirection
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +38,7 @@ $_SESSION[remarques]= $_POST["remarques"];
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="<?php echo isset($_SESSION['name']) ?  $_SESSION['name'] : ''?>" required><br><br> 
         <label for="LastName">LastName:</label>
-        <input type="text" id="LastName" name="LastName" value="<?php echo isset($_SESSION['LasteName']) ?  $_SESSION['LastName'] : ''?>" required><br><br>
+        <input type="text" id="LastName" name="LastName" value="<?php echo isset($_SESSION['LastName']) ?  $_SESSION['LastName'] : ''?>" required><br><br>
         <label for="Age">Age:</label>
         <input type="number" id="Age" name="Age" min="1" max="50" value="<?php echo isset($_SESSION['Age']) ?  $_SESSION['Age'] : ''?>" required><br><br>
         <label for="NumTele">Num Tele:</label>
@@ -51,7 +66,7 @@ $_SESSION[remarques]= $_POST["remarques"];
                 <label for="BD" name="BD">BD</label>
                 <input type="checkbox" id="BD" name="Modules[]" value="BD" <?php echo (isset($_SESSION["Modules"]) && in_array("BD", $_SESSION["Modules"])) ? 'checked':'' ?> >
                 <label for="Web" name="Web">Web</label>
-                <input type="checkbox" id="Web" name="Modules[]" value="Web"  <?php echo (isset($_SESSION["Modules"]) && in_array("Wab", $_SESSION["Modules"])) ? 'checked':'' ?>>
+                <input type="checkbox" id="Web" name="Modules[]" value="Web"  <?php echo (isset($_SESSION["Modules"]) && in_array("Web", $_SESSION["Modules"])) ? 'checked':'' ?>>
                 <label for="Reseau" name="Reseau">Reseau</label>
                 <input type="checkbox" id="Reseau" name="Modules[]" value="Reseau"  <?php echo (isset($_SESSION["Modules"]) && in_array("Reseau", $_SESSION["Modules"])) ? 'checked':'' ?>>
                 <label for="Java" name="Java">Java</label>
@@ -60,13 +75,17 @@ $_SESSION[remarques]= $_POST["remarques"];
                 <input type="checkbox" id="Compilation" name="Modules[]" value="Compilation"  <?php echo (isset($_SESSION["Modules"]) && in_array("Compilation", $_SESSION["Modules"])) ? 'checked':'' ?>>
                 </filedset><br><br>
                 <label for="nbreProjets">Nbre Projets realise cette anne:</label>
-                <input type="number" id="nbreProjets" name="nbreProjets" min="0" max="10" value="<?php echo isset($_SESSION['nbreProjets']) ?  $_SESSION['nbreProjets'] : ''?> " required ><br><br>
-    
-                <input type="text" name="remarques" id="remarques" placeholder="Remarques" value="<?php echo isset($_SESSION['remarques']) ?  $_SESSION['remarques'] : ''?>" required><br><br>
-                <input name="file" type="file"><br><br> 
-                <button type="submit" name = "upload" >Upload</button><br><br>
-        
-                <input type="submit" value="Submit">
+                <input type="number" id="nbreProjets" name="nbreProjets" min="0" max="10" value="<?php echo isset($_SESSION['nbreProjets']) ? $_SESSION['nbreProjets'] : ''?>" required><br><br>
+                <input type="text" name="remarques" id="remarques" placeholder="Remarques" value="<?php echo isset($_SESSION['remarques']) ? $_SESSION['remarques'] : ''?>" required><br><br>
+                <label for="stages">Stages effectues :</label>
+                <textarea id="stages" name="stages" rows="4" cols="50" required><?php echo isset($_SESSION['stages']) ? $_SESSION['stages'] :'' ?></textarea><br><br>
+                <label for="projets">Projets realises :</label>
+                <textarea id="projets" name="projets" rows="4" cols="50"  required><?php echo isset($_SESSION['projets']) ? $_SESSION['projets'] :'' ?></textarea><br><br>
+                <label for="CentreInteret">Centres d'interet :</label>
+                <textarea id="CentreInteret" name="CentreInteret" rows="4" cols="50" required><?php echo isset($_SESSION['CentreInteret']) ? $_SESSION['CentreInteret'] : ''?></textarea><br><br>
+                <label for="Langues">Langues :</label>
+                <textarea id="Langues" name="Langues" rows="4" cols="50" required><?php echo isset($_SESSION['Langues']) ? $_SESSION['Langues'] : ''?></textarea><br><br>
+                  <input type="submit" name="submit" value="Envoyer">
                 <input type="reset" value="Reset">
         </form>
 </body>
