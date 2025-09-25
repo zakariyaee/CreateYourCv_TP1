@@ -7,16 +7,16 @@ use Dompdf\Options;
 session_start();
  
   $options = new Options();
-    $options->set('isRemoteEnabled' ,true); // 3la wdiit les images 
+    $options->set('isRemoteEnabled' ,true); // 3la wdit les images 
     $Dompdf =new Dompdf([$options,
-    "chroot" => __DIR__ // hna kat3tina l chemin absolu dyal dossier li fih pdf.php
+    "chroot" => __DIR__ // hna kat3tina dik  chemin absolu dyal dossier li fih pdf.php
     ]);
 
 
     $photoPath = __DIR__ . '/' . $_SESSION["photo"]; // Construire le chemin absolu
 
-    // HTml li ay t7et f pdf (dompdf at convertih rasso)
 
+    // HTml li ay t7et f pdf (dompdf at convertih rasso)
   $html = '
 <!DOCTYPE html>
 <html lang="fr">
@@ -134,8 +134,11 @@ $html .= '
 
 
     $Dompdf->loadHtml($html); // html ghanconvertiwh f pdf
+
     $Dompdf->setPaper('A4','portrait'); // format w orientation
+
     $Dompdf->render(); // hadi katgenerer l pdf
+    
     $Dompdf->stream("Cv.pdf",["Attachment"=>false]); // hna kataffichi l pdf f navigateur
     
 

@@ -10,8 +10,9 @@
         if(!$connection){
             echo "Erreur lors de la connection avec la base de donnee !";
         }else{
-            $sql = "select email from utilisateurs ";
+            $sql = "select email from utilisateurs where email = '".$_SESSION["email"]."' ";
             $result = $connection->query($sql);
+            $result->setFetchMode(PDO::FETCH_ASSOC);
             if( $result->rowCount() == 0 ){
                 $module = '';
                 foreach ($_SESSION["Modules"] as $m) {
@@ -34,16 +35,24 @@
                         .$_SESSION["email"]."','"
                         .$module."')";
                 if (!$connection->query($sql1)){
-                    echo '<script > alert("les donnes ne peut pas etre sauvgarder  !")</script>';
-
+                        echo '<script>
+                        alert("Les données n\'ont pas pu être sauvegardées !");
+                        window.location.href = "formulaire.php";
+                        </script>';
+                        exit();
                 }
-            }else {
-                echo '<script > alert("email deja exist !")</script>';
+                header('Location: pdf.php');
+                exit();
+            }else { 
+                echo '<script>
+                alert("email déjà exist !");
+                window.location.href = "formulaire.php";
+                </script>';
+                exit();
             }
-
+              
         }
-        header('Location: pdf.php');
-        exit();
+        
     }
 
     if (isset($_POST['Modifier'])) {
