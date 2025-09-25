@@ -1,73 +1,74 @@
 <?php 
-session_start(); // Démarrer la session avant tout envoi HTML
+    session_start(); // Démarrer la session avant tout envoi HTML
 
-// Sécuriser l'accès aux données POST (optionnel mais recommandé)
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
-
-    
-    $_SESSION["name"] = $_POST["name"] ?? '';
-    $_SESSION["LastName"] = $_POST["LastName"] ?? '';
-    $_SESSION["NumTele"] = $_POST["NumTele"] ?? '';
-    $_SESSION["email"] = $_POST["email"] ?? '';
-    $_SESSION["Age"] = $_POST["Age"] ?? '';
-    $_SESSION["remarques"] = $_POST["remarques"] ?? '';
-    $_SESSION["class"] = $_POST["class"] ?? '';
-    $_SESSION["annee"] = $_POST["annee"] ?? '';
-    $_SESSION["nbreProjets"] = $_POST["nbreProjets"] ?? '';
-    $_SESSION['Langues'] = $_POST['Langues'] ?? '';
-    $_SESSION['CentreInteret'] = $_POST['CentreInteret'] ?? '';
-    $_SESSION['projets'] = $_POST['projets'] ?? '';
-    $_SESSION['stages'] = $_POST['stages'] ?? '';
-    $_SESSION['Modules'] = $_POST['Modules'] ?? [];
-
-    if(!empty($_FILES['photo']['name'])){
-        $uploadDir = 'uploads/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir);
-    }
-
-    // $_FILES['photo']['name'] t9ed tkuna smiya fiha un chemin bhal telechargements/gi/cv.png ...
-    $fileName = basename($_FILES['photo']['name']);
-    // hadi kat3tina ghi smiya dyal fichier b7al cv.png
-
-    $filePath = $uploadDir . $fileName;
-    // hadi kat3tina chemin li khasna bhal uploads/cv.png
-
-    // le fichier bach ytsift mn end l'utilisateur l serveur kaydouz ela wahd l fichier temporaire
-    if (move_uploaded_file($_FILES['photo']['tmp_name'], $filePath)) {
-        $_SESSION['photo'] = $filePath; // safi hna kayt7et f session
-    } else {
-        echo "Erreur lors du téléchargement de la photo.";
-    }
- }
+    // Sécuriser l'accès aux données POST (optionnel mais recommandé)
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
 
+        $_SESSION["name"] = $_POST["name"] ?? '';
+        $_SESSION["LastName"] = $_POST["LastName"] ?? '';
+        $_SESSION["NumTele"] = $_POST["NumTele"] ?? '';
+        $_SESSION["email"] = (trim($_POST["email"])) ?? '';
+        $_SESSION["Age"] = $_POST["Age"] ?? '';
+        $_SESSION["remarques"] = $_POST["remarques"] ?? '';
+        $_SESSION["class"] = $_POST["class"] ?? '';
+        $_SESSION["annee"] = $_POST["annee"] ?? '';
+        $_SESSION["nbreProjets"] = $_POST["nbreProjets"] ?? '';
+        $_SESSION['Langues'] = $_POST['Langues'] ?? '';
+        $_SESSION['CentreInteret'] = $_POST['CentreInteret'] ?? '';
+        $_SESSION['projets'] = $_POST['projets'] ?? '';
+        $_SESSION['stages'] = $_POST['stages'] ?? '';
+        $_SESSION['Modules'] = $_POST['Modules'] ?? [];
+
+        if(!empty($_FILES['photo']['name'])){
+            $uploadDir = 'uploads/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir);
+        }
+
+        // $_FILES['photo']['name'] t9ed tkuna smiya fiha un chemin bhal telechargements/gi/cv.png ...
+        $fileName = basename($_FILES['photo']['name']);
+        // hadi kat3tina ghi smiya dyal fichier b7al cv.png
+
+        $filePath = $uploadDir . $fileName;
+        // hadi kat3tina chemin li khasna bhal uploads/cv.png
+
+        // le fichier bach ytsift mn end l'utilisateur l serveur kaydouz ela wahd l fichier temporaire
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $filePath)) {
+            $_SESSION['photo'] = $filePath; // safi hna kayt7et f session
+        } else {
+            echo "Erreur lors du téléchargement de la photo.";
+        }
+     }
 
 
-    // Redirection après enregistrement
-    header('Location: recap.php');
-    exit(); 
-    
-}
-if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
-        $_SESSION["name"] = '';
-        $_SESSION["LastName"] = '';
-        $_SESSION["NumTele"] ='';
-        $_SESSION["email"] = '';
-        $_SESSION["Age"] =  '';
-        $_SESSION["remarques"] ='';
-        $_SESSION["class"] ='';
-        $_SESSION["annee"] = '';
-        $_SESSION["nbreProjets"] ='';
-        $_SESSION['Langues'] ='';
-        $_SESSION['CentreInteret'] ='';
-        $_SESSION['projets'] ='';
-        $_SESSION['stages'] ='';
-        $_SESSION['Modules'] =[];
 
-        header('Location: formulaire.php'); // bhala katraifraicher la page 
+
+        // Redirection après enregistrement
+        header('Location: recap.php');
         exit();
+
     }
+    if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
+            $_SESSION["name"] = '';
+            $_SESSION["LastName"] = '';
+            $_SESSION["NumTele"] ='';
+            $_SESSION["email"] = '';
+            $_SESSION["Age"] =  '';
+            $_SESSION["remarques"] ='';
+            $_SESSION["class"] ='';
+            $_SESSION["annee"] = '';
+            $_SESSION["nbreProjets"] ='';
+            $_SESSION['Langues'] ='';
+            $_SESSION['CentreInteret'] ='';
+            $_SESSION['projets'] ='';
+            $_SESSION['stages'] ='';
+            $_SESSION['Modules'] =[];
+
+            header('Location: formulaire.php'); // bhala katraifraicher la page
+            exit();
+        }
+
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +133,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
                 <textarea id="CentreInteret" name="CentreInteret" rows="4" cols="50" required><?php echo isset($_SESSION['CentreInteret']) ? $_SESSION['CentreInteret'] : ''?></textarea><br><br>
                 <label for="Langues">Langues :</label>
                 <textarea id="Langues" name="Langues" rows="4" cols="50" required><?php echo isset($_SESSION['Langues']) ? $_SESSION['Langues'] : ''?></textarea><br><br>
-                  <input type="submit" name="submit" value="Envoyer">
+                <input type="submit" name="submit" value="Envoyer">
                 <input  color="red" type="submit" name="Reset" value="Reset" >
         </form>
 </body>
