@@ -4,6 +4,7 @@ session_start(); // Démarrer la session avant tout envoi HTML
 // Sécuriser l'accès aux données POST (optionnel mais recommandé)
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
 
+    
     $_SESSION["name"] = $_POST["name"] ?? '';
     $_SESSION["LastName"] = $_POST["LastName"] ?? '';
     $_SESSION["NumTele"] = $_POST["NumTele"] ?? '';
@@ -18,6 +19,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
     $_SESSION['projets'] = $_POST['projets'] ?? '';
     $_SESSION['stages'] = $_POST['stages'] ?? '';
     $_SESSION['Modules'] = $_POST['Modules'] ?? [];
+
+    if(!empty($_FILES['photo']['name'])){
+        $uploadDir = 'uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir);
+    }
+
+    // $_FILES['photo']['name'] t9ed tkuna smiya fiha un chemin bhal telechargements/gi/cv.png ...
+    $fileName = basename($_FILES['photo']['name']);
+    // hadi kat3tina ghi smiya dyal fichier b7al cv.png
+
+    $filePath = $uploadDir . $fileName;
+    // hadi kat3tina chemin li khasna bhal uploads/cv.png
+
+    // le fichier bach ytsift mn end l'utilisateur l serveur kaydouz ela wahd l fichier temporaire
+    if (move_uploaded_file($_FILES['photo']['tmp_name'], $filePath)) {
+        $_SESSION['photo'] = $filePath; // safi hna kayt7et f session
+    } else {
+        echo "Erreur lors du téléchargement de la photo.";
+    }
+ }
+
+
+
 
     // Redirection après enregistrement
     header('Location: recap.php');
@@ -39,6 +64,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
         $_SESSION['projets'] ='';
         $_SESSION['stages'] ='';
         $_SESSION['Modules'] =[];
+
+        header('Location: formulaire.php'); // bhala katraifraicher la page 
+        exit();
     }
 ?>
 
@@ -49,9 +77,11 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>CV pro</title>
      <link rel="stylesheet" href="formulaire.css">
-</head>
-<body>
+ </head>
+ <body>
     <form action="formulaire.php" method="post"  enctype="multipart/form-data">
+        <label for="photo">Photo:</label>
+        <input type="file" id="photo" name="photo" accept="image/*"><br><br>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="<?php echo isset($_SESSION['name']) ?  $_SESSION['name'] : ''?>" required><br><br> 
         <label for="LastName">LastName:</label>
@@ -103,7 +133,8 @@ if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['Reset'])){
                 <label for="Langues">Langues :</label>
                 <textarea id="Langues" name="Langues" rows="4" cols="50" required><?php echo isset($_SESSION['Langues']) ? $_SESSION['Langues'] : ''?></textarea><br><br>
                   <input type="submit" name="submit" value="Envoyer">
-                <input type="reset" name="Reset" value="Reset" >
+                <input  color="red" type="submit" name="Reset" value="Reset" >
         </form>
 </body>
+
 </html>
