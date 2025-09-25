@@ -57,7 +57,7 @@ session_start();
 //     //     $file = fopen("Cv.txt", "w");
 //     //     if ($file) {
 //     //         // Formatage du contenu du CV
-//     //         $cv = "===== CURRICULUM VITAE =====\n\n";
+//     //         $cv = "===== CV Pro =====\n\n";
 //     //         $cv .= "Nom : " . $_SESSION["LastName"] . "\n";
 //     //         $cv .= "Prénom : " . $_SESSION["name"] . "\n";
 //     //         $cv .= "Âge : " . $_SESSION["Age"] . "\n";
