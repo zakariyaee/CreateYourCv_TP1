@@ -8,7 +8,9 @@ session_start();
  
   $options = new Options();
     $options->set('isRemoteEnabled' ,true); // 3la wdiit les images 
-    $Dompdf =new Dompdf($options);
+    $Dompdf =new Dompdf([$options,
+    "chroot" => __DIR__ // hna kat3tina l chemin absolu dyal dossier li fih pdf.php
+    ]);
 
 
     $photoPath = __DIR__ . '/' . $_SESSION["photo"]; // Construire le chemin absolu
