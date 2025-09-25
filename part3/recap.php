@@ -44,10 +44,12 @@
                 header('Location: pdf.php');
                 exit();
             }else { 
-                echo '<script>
-                alert("email déjà exist !");
-                window.location.href = "formulaire.php";
-                </script>';
+                // echo '<script>
+                // alert("email déjà exist !");
+                // window.location.href = "formulaire.php";
+                // </script>';
+                // exit();
+                header('Location: miseAjour.php');
                 exit();
             }
               
